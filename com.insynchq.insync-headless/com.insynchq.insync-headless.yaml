@@ -10,35 +10,28 @@ finish-args:
   - --filesystem=/tmp
   - --share=network
   # workaround for the hardcoded ~/.config
+  - --persist=.config/Insync
   - --persist=.config/Insync-headless
-cleanup:
-  - /include
-  - /lib/pkgconfig
 modules:
   - name: insync
     buildsystem: simple
     build-commands:
       -  install -Dm755 apply_extra /app/bin/apply_extra
       -  install -Dm755 insync-headless /app/bin/insync-headless
-      -  install -Dm755 /usr/bin/ar /app/bin
-      -  mkdir -p /app/lib
-      -  ARCH_TRIPLE=$(gcc --print-multiarch) && cp /usr/lib/${ARCH_TRIPLE}/libbfd-*.so /app/lib/
-      -  ARCH_TRIPLE=$(gcc --print-multiarch) && ln -s /usr/lib/${ARCH_TRIPLE}/libcurl.so.4.5.0 /app/lib/libcurl-gnutls.so.4
     sources:
       - type: script
         dest-filename: apply_extra
         commands:
-          - ar x insync.deb
-          - rm -f insync.deb control.tar.gz debian-binary
-          - tar -xf data.tar.gz
-          - rm -f data.tar.gz
-          - rm -rf usr/share/icons
-          - mv usr/* .
-          - rmdir usr
+          - bsdtar -Oxf insync.deb data.tar.gz |
+              tar -xz ./usr/lib/insync --strip-components=4
+          - mkdir man
+          - bsdtar -Oxf insync.deb data.tar.gz |
+              tar -xz -C man ./usr/share/man/man1 --strip-components=5
+          - rm -f insync.deb
       - type: dir
         path: resources
       - type: extra-data
         filename: insync.deb
-        url: http://s.insynchq.com/builds/insync-headless_3.0.1.10590-buster_amd64.deb
-        sha256: 9634acffaa0666070c52f6ec9486444b875570d0d83a2017c4e69eba86944a4c
-        size: 24954748
+        url: http://s.insynchq.com/builds/insync-headless_3.0.7.10610-buster_amd64.deb
+        sha256: 893c13a545dd88a9dd4b1efb972fcb8ab71f9121e6831c3d7d7eeeb397936588
+        size: 24959988
