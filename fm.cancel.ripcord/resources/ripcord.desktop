@@ -1,9 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=Ripcord
-GenericName=Discord Client
-Exec=ripcord
-Terminal=false
-Icon=ripcord
-Comment=Chat client for Discord
-Categories=Network;InstantMessaging;
