@@ -1,7 +1,7 @@
 app-id: org.libvirt.libvirt.BaseApp
 #branch: stable
 runtime: org.gnome.Platform
-runtime-version: '3.38'
+runtime-version: '40beta'
 sdk: org.gnome.Sdk
 separate-locales: false
 #finish-args:
